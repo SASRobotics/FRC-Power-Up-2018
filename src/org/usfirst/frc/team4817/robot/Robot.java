@@ -2,14 +2,22 @@
 package org.usfirst.frc.team4817.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4817.robot.subsystems.Arm;
+import org.usfirst.frc.team4817.robot.subsystems.Drive;
 import org.usfirst.frc.team4817.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4817.robot.subsystems.Intake;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +30,14 @@ public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
+	public static final RobotMap robotMap = new RobotMap();
+	
+	//drive
+	public static final Drive drive = new Drive();
+	//arm
+	public static final Arm arm = new Arm();
+	//intake
+	public static final Intake intake = new Intake();
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -96,6 +112,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		
 	}
 
 	/**
