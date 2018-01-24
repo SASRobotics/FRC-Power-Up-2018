@@ -18,4 +18,8 @@ public class RobotMap {
 	//intake
 	public static final int intakeLeftMotor = 6;
 	public static final int intakeRightMotor = 7;
+	//climber
+	public static final int climberMotor = 8;
+	//potentiometer
+	public static final int potInput = 9;
 }

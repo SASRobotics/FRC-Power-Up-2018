@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team4817.robot.commands.ArmCommand;
+import org.usfirst.frc.team4817.robot.commands.ClimberCommand;
 import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4817.robot.commands.IntakeCommand;
 
@@ -23,6 +24,9 @@ public class OI {
 	Button leftIntake = new JoystickButton(stick1, 1);
 	Button rightIntake = new JoystickButton(stick2, 1);
 	Button out = new JoystickButton(stick2, 2);
+	//climber buttons
+	Button climberUp= new JoystickButton(stick1, 5); 
+	Button climberDown= new JoystickButton(stick2, 3);
 	
 	//read joystick
 	public double getLeftStick(){
@@ -51,9 +55,14 @@ public class OI {
 		//right intake
 		rightIntake.whenPressed(new IntakeCommand('r', 'i'));
 		rightIntake.whenReleased(new IntakeCommand('r', 's'));
-		//out
+		//intake out
 		out.whenPressed(new IntakeCommand('b', 'o'));
 		out.whenReleased(new IntakeCommand('b', 's'));
-		
+		//control climber
+		climberUp.whenPressed(new ClimberCommand(1));
+		climberDown.whenPressed(new ClimberCommand(2));
+		//stop climber
+		climberUp.whenReleased(new ClimberCommand(0));
+		climberDown.whenReleased(new ClimberCommand(0));
 	}
 }
