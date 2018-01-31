@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team4817.robot;
 
-import org.usfirst.frc.team4817.robot.RobotMap;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
-import org.usfirst.frc.team4817.robot.commands.GripPipeline;
 import org.usfirst.frc.team4817.robot.subsystems.Arm;
 import org.usfirst.frc.team4817.robot.subsystems.Drive;
 import org.usfirst.frc.team4817.robot.subsystems.ExampleSubsystem;
@@ -44,10 +42,6 @@ public class Robot extends IterativeRobot {
 	//climber
 	public static final Climber climber = new Climber();
 
-	//vision
-	private VisionThread visionThread;
-	private ArrayList<Line> visionOutput;
-	private final Object imgLock = new Object();
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -63,18 +57,6 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(RobotMap.imageWidth, RobotMap.imageHeight);
-    
-    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-        if (!pipeline.filterLinesOutput().isEmpty()) {
-            ArrayList<Line> output = pipeline.filterLinesOutput();
-            synchronized (imgLock) {
-                visionOutput = output;
-            }
-        }
-    });
-    visionThread.start();
 	}
 
 	/**

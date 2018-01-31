@@ -22,7 +22,4 @@ public class RobotMap {
 	public static final int climberMotor = 8;
 	//potentiometer
 	public static final int potInput = 9;
-	//camera
-	public static final int imageWidth = 640;
-	public static final int imageHeight = 480;
 }
