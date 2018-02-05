@@ -24,10 +24,10 @@ public class VisionCommand extends Command {
 	
   //vision
 	private VisionThread visionThread;
-	private ArrayList<Line> visionOutput;
+	private ArrayList<MatOfPoint> visionOutput;
 	private final Object imgLock = new Object();
 
-  private static final int IMG_WIDTH = 640;
+	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
   
   public VisionCommand() {
@@ -42,8 +42,8 @@ public class VisionCommand extends Command {
     camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     
     visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-        if (!pipeline.filterLinesOutput().isEmpty()) {
-            ArrayList<Line> output = pipeline.filterLinesOutput();
+        if (!pipeline.filterContoursOutput().isEmpty()) {
+            ArrayList<MatOfPoint> output = pipeline.filterContoursOutput();
             synchronized (imgLock) {
                 visionOutput = output;
             }
@@ -55,11 +55,15 @@ public class VisionCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-    ArrayList<Line> output;
+    ArrayList<MatOfPoint> output;
+		ArrayList<Rect> rects;
     synchronized (imgLock) {
         output = visionOutput;
     }
-    System.out.println(Arrays.toString(output.toArray()));
+		rects = output.stream()
+        .map(el -> boundingRect(el))
+        .collect(Collectors.toList()); 
+    System.out.println(Arrays.toString(rects.toArray()));
     
 	}
 
