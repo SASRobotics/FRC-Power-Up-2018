@@ -63,12 +63,13 @@ public class VisionCommand extends Command {
 			output = visionOutput;
 		}
 		
-		double maxArea;
+		double maxArea = 0;
 		Rect rect;
 		for (MatOfPoint each : output) {
 			Rect r = boundingRect(each);
 			double a = r.size().area();
 			if (a > maxArea) {
+				maxArea = a;
 				rect = r;
 			}
 		}
