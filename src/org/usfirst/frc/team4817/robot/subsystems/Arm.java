@@ -6,57 +6,54 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 /**
  *
  */
-public class Arm extends PIDSubsystem {
+public class Arm extends Subsystem {
 	WPI_TalonSRX arm;
 	WPI_TalonSRX armSlave;
 	
-	AnalogInput pot;
+	Potentiometer pot;
+	
+	AnalogInput ai = new AnalogInput(0);
     
     public Arm() {
-        super("Arm", 1.0, 0.0, 0.0);
+        super("Arm");
         
-        arm = new WPI_TalonSRX(RobotMap.armLeftMotor);
+        arm = new WPI_TalonSRX(RobotMap.armMotor);
 
-		armSlave = new WPI_TalonSRX(RobotMap.armRightMotor);
-		armSlave.follow(arm);
+		//armSlave = new WPI_TalonSRX(RobotMap.armRightMotor);
+		//armSlave.follow(arm);
 		
-		pot = new AnalogInput(RobotMap.potInput);
-        
-        setAbsoluteTolerance(0.2);
-        getPIDController().setContinuous(false);
-        
-        Sendable s = new AnalogPotentiometer(pot);
-        s.setName("Arm", "PIDSubsystem Controller");
+        pot = new AnalogPotentiometer(ai, 360, 0);
     }
 
 	public void armUp() {
-		arm.set(.1);
+		//main is <= 361
+		//backup is >= .36
+		if(pot.get() <= 361)
+			arm.set(1.0);
+		//System.out.println(pot.get());
 	}
 
 	public void armDown() {
-		arm.set(-.1);
+		//main is >= 359
+		//backup is <= 342
+		if(pot.get() >= 359)
+			arm.set(-1.0);
+		//System.out.println(pot.get());
 	}
 
 	public void armStop() {
 		arm.set(0);
 
 	}
-    
+
     public void initDefaultCommand() {
-    }
-
-    protected double returnPIDInput() {
-        return pot.getAverageVoltage();
-    }
-
-    protected void usePIDOutput(double output) {
-        arm.pidWrite(output);
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new MySpecialCommand());
     }
 }

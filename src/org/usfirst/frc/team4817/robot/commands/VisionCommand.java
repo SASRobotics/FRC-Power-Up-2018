@@ -6,6 +6,9 @@ import org.usfirst.frc.team4817.robot.commands.GripPipeline;
 import org.usfirst.frc.team4817.robot.Robot;
 import org.usfirst.frc.team4817.robot.RobotMap;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
 import org.opencv.imgproc.*;
@@ -64,9 +67,9 @@ public class VisionCommand extends Command {
 		}
 		
 		double maxArea = 0;
-		Rect rect;
+		Rect rect = null;
 		for (MatOfPoint each : output) {
-			Rect r = boundingRect(each);
+			Rect r = Imgproc.boundingRect(each);
 			double a = r.size().area();
 			if (a > maxArea) {
 				maxArea = a;
