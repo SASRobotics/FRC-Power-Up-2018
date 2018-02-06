@@ -29,6 +29,7 @@ public class VisionCommand extends Command {
 
 	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
+	private static final double SPEED = 0.5;
   
   public VisionCommand() {
 		// Use requires() here to declare subsystem dependencies
@@ -55,15 +56,35 @@ public class VisionCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-    ArrayList<MatOfPoint> output;
-		ArrayList<Rect> rects;
-    synchronized (imgLock) {
-        output = visionOutput;
-    }
-		rects = output.stream()
-        .map(el -> boundingRect(el))
-        .collect(Collectors.toList()); 
-    System.out.println(Arrays.toString(rects.toArray()));
+
+		ArrayList<MatOfPoint> output;
+		
+		synchronized (imgLock) {
+			output = visionOutput;
+		}
+		
+		double maxArea;
+		Rect rect;
+		for (MatOfPoint each : output) {
+			Rect r = boundingRect(each);
+			double a = r.size().area();
+			if (a > maxArea) {
+				rect = r;
+			}
+		}
+		
+		int rectCenter = rect.x + rect.width/2;
+		boolean left = (IMG_WIDTH/2 - rectCenter) > 0;
+		
+		if (left) {
+			Robot.drive.tankDrive(SPEED, 0);
+		} else {
+			Robot.drive.tankDrive(0, SPEED);
+		}
+
+		Robot.drive.driveStraight(SPEED);
+
+		System.out.println(Arrays.toString(output.toArray()));
     
 	}
 
