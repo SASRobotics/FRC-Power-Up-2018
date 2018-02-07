@@ -1,6 +1,6 @@
-
 package org.usfirst.frc.team4817.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
@@ -52,11 +52,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
-
 	}
 
 	/**
