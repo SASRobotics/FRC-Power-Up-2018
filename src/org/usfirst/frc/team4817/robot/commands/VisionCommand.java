@@ -60,9 +60,6 @@ public class VisionCommand extends Command {
 	    				rect = r;
 	    			}
 	    		}
-	    		;
-	    		
-	    		if (rect == null) return;
 	    		
 	    		int rectCenter = rect.x + rect.width/2;
 	    		
@@ -91,7 +88,7 @@ public class VisionCommand extends Command {
 		
 		System.out.println("left: " + left);
 		
-		if (!left) {
+		if (left) {
 			Robot.drive.tankDrive(SPEED, 0);
 		} else {
 			Robot.drive.tankDrive(0, SPEED);
