@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
-
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
 import org.opencv.features2d.FeatureDetector;
@@ -25,7 +23,7 @@ import org.opencv.objdetect.*;
 *
 * @author GRIP
 */
-public class GripPipeline implements VisionPipeline {
+public class GripPipeline {
 
 	//Outputs
 	private Mat hslThresholdOutput = new Mat();
@@ -39,12 +37,12 @@ public class GripPipeline implements VisionPipeline {
 	/**
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
-	@Override	public void process(Mat source0) {
+	public void process(Mat source0) {
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = source0;
-		double[] hslThresholdHue = {85.79136690647482, 114.29541595925298};
-		double[] hslThresholdSaturation = {84.08251607125425, 254.23539376909596};
-		double[] hslThresholdLuminance = {153.64208633093526, 213.8709677419355};
+		double[] hslThresholdHue = {69.60431654676259, 120.40747028862478};
+		double[] hslThresholdSaturation = {0.0, 94.04863655347627};
+		double[] hslThresholdLuminance = {121.53776978417265, 255.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:
@@ -56,11 +54,11 @@ public class GripPipeline implements VisionPipeline {
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
 		double filterContoursMinArea = 300.0;
 		double filterContoursMinPerimeter = 0.0;
-		double filterContoursMinWidth = 0.0;
-		double filterContoursMaxWidth = 1000.0;
-		double filterContoursMinHeight = 0.0;
+		double filterContoursMinWidth = 25.0;
+		double filterContoursMaxWidth = 200.0;
+		double filterContoursMinHeight = 200.0;
 		double filterContoursMaxHeight = 1000.0;
-		double[] filterContoursSolidity = {0, 100};
+		double[] filterContoursSolidity = {56.65467625899281, 100};
 		double filterContoursMaxVertices = 1000000.0;
 		double filterContoursMinVertices = 0.0;
 		double filterContoursMinRatio = 0.0;
