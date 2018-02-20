@@ -22,6 +22,19 @@ import org.usfirst.frc.team4817.robot.subsystems.Climber;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.opencv.core.*;
+import org.opencv.core.Core.*;
+import org.opencv.imgproc.*;
+import org.opencv.objdetect.*;
+
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.vision.VisionRunner;
+import edu.wpi.first.wpilibj.vision.VisionThread;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
