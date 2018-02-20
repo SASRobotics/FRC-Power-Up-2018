@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4817.robot.commands.VisionCommand;
+import org.usfirst.frc.team4817.robot.commands.GripPipeline;
 import org.usfirst.frc.team4817.robot.subsystems.Arm;
 import org.usfirst.frc.team4817.robot.subsystems.Drive;
 import org.usfirst.frc.team4817.robot.subsystems.ExampleSubsystem;
@@ -45,6 +46,17 @@ public class Robot extends IterativeRobot {
 
 
 	Command autonomousCommand;
+
+	//vision
+	private VisionThread visionThread;
+	private boolean left;
+	private final Object imgLock = new Object();
+
+	private static final int IMG_WIDTH = 640;
+	private static final int IMG_HEIGHT = 480;
+	private static final double SPEED = 0.5;
+  
+
 	//SendableChooser<Command> chooser = new SendableChooser<>();
 
 	/**
@@ -53,11 +65,41 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture();
+
 		oi = new OI();
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", chooser);
+
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
+				if (!pipeline.filterContoursOutput().isEmpty()) {
+						ArrayList<MatOfPoint> output = pipeline.filterContoursOutput();
+						
+						
+				double maxArea = 0;
+				Rect rect = null;
+				for (MatOfPoint each : output) {
+					Rect r = Imgproc.boundingRect(each);
+					double a = r.size().area();
+					if (a > maxArea) {
+						maxArea = a;
+						rect = r;
+					}
+				}
+				
+				int rectCenter = rect.x + rect.width/2;
+				
+
+				System.out.println("left?: " + (IMG_WIDTH/2 - rectCenter));
+				
+						synchronized (imgLock) {
+							left = (IMG_WIDTH/2 - rectCenter) > 0;
+						}
+				}
+		});
+		visionThread.start();
 	}
 
 	/**
@@ -89,7 +131,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//autonomousCommand = chooser.getSelected();
-		autonomousCommand = new VisionCommand();
+		// autonomousCommand = new VisionCommand();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -99,8 +141,8 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		// if (autonomousCommand != null)
+		// 	autonomousCommand.start();
 	}
 
 	/**
@@ -108,7 +150,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+		// Scheduler.getInstance().run();
+		boolean left;
+		synchronized (imgLock) {
+			left = this.left;
+
+		}
+		
+		
+		System.out.println("left: " + left);
+		
+		if (left) {
+			drive.tankDrive(SPEED, 0);
+		} else {
+			drive.tankDrive(0, SPEED);
+		}
 	}
 
 	@Override
