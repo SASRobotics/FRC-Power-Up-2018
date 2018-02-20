@@ -29,6 +29,7 @@ public class Drive extends Subsystem {
 		
 		//drive
 		drive = new DifferentialDrive(leftFront, rightFront);
+		drive.setSafetyEnabled(false);
 		//pair motors
     	leftRear.follow(leftFront);
     	rightRear.follow(rightFront);

@@ -26,19 +26,19 @@ public class OI {
 	Button out = new JoystickButton(stick2, 2);
 	//climber buttons
 	Button climberUp= new JoystickButton(stick1, 5); 
-	Button climberDown= new JoystickButton(stick2, 3);
+	Button climberDown= new JoystickButton(stick2, 6);
 	
 	//read joystick
 	public double getLeftStick(){
 		if(Math.abs(stick1.getY())< 0.05)
 			return 0; 
-		return stick1.getY(); 
+		return -(stick1.getY()); 
 	}
 	
 	public double getRightStick(){
 		if(Math.abs(stick2.getY())< 0.05)
 			return 0;
-		return stick2.getY();
+		return -(stick2.getY());
 	}
 	
 	

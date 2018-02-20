@@ -13,10 +13,10 @@ public class RobotMap {
 	public static final int driveRightFrontMotor = 6;
 	public static final int driveRightRearMotor = 4;
 	//arm
-	public static final int armMotor = 7;
+	public static final int armMotor = 9;
 	//intake
-	public static final int intakeLeftMotor = 6;
-	public static final int intakeRightMotor = 7;
+	public static final int intakeLeftMotor = 7;
+	public static final int intakeRightMotor = 10;
 	//climber
-	public static final int climberMotor = 8;
+	public static final int climberMotor = 1;
 }

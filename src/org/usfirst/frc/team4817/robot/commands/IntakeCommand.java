@@ -46,6 +46,9 @@ public class IntakeCommand extends Command {
     			Robot.intake.leftStop();
         		Robot.intake.rightStop(); 
     		}
+    	} else {
+    		Robot.intake.leftStop();
+    		Robot.intake.rightStop();
     	}
     }
 

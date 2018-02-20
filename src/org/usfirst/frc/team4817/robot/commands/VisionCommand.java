@@ -27,7 +27,7 @@ public class VisionCommand extends Command {
 	
   //vision
 	private VisionThread visionThread;
-	private ArrayList<MatOfPoint> visionOutput;
+	private boolean left;
 	private final Object imgLock = new Object();
 
 	private static final int IMG_WIDTH = 640;
@@ -44,15 +44,37 @@ public class VisionCommand extends Command {
 	protected void initialize() {
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-    
-    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-        if (!pipeline.filterContoursOutput().isEmpty()) {
-            ArrayList<MatOfPoint> output = pipeline.filterContoursOutput();
-            synchronized (imgLock) {
-                visionOutput = output;
-            }
-        }
-    });
+    if (visionThread == null) {
+	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
+	        if (!pipeline.filterContoursOutput().isEmpty()) {
+	            ArrayList<MatOfPoint> output = pipeline.filterContoursOutput();
+	            
+	            
+	    		double maxArea = 0;
+	    		Rect rect = null;
+	    		for (MatOfPoint each : output) {
+	    			Rect r = Imgproc.boundingRect(each);
+	    			double a = r.size().area();
+	    			if (a > maxArea) {
+	    				maxArea = a;
+	    				rect = r;
+	    			}
+	    		}
+	    		;
+	    		
+	    		if (rect == null) return;
+	    		
+	    		int rectCenter = rect.x + rect.width/2;
+	    		
+	
+	    		System.out.println("left?: " + (IMG_WIDTH/2 - rectCenter));
+	    		
+	            synchronized (imgLock) {
+	            	left = (IMG_WIDTH/2 - rectCenter) > 0;
+	            }
+	        }
+	    });
+    }
     visionThread.start();
 	}
 
@@ -60,35 +82,24 @@ public class VisionCommand extends Command {
 	@Override
 	protected void execute() {
 
-		ArrayList<MatOfPoint> output;
-		
+		boolean left;
 		synchronized (imgLock) {
-			output = visionOutput;
+			left = this.left;
+
 		}
 		
-		double maxArea = 0;
-		Rect rect = null;
-		for (MatOfPoint each : output) {
-			Rect r = Imgproc.boundingRect(each);
-			double a = r.size().area();
-			if (a > maxArea) {
-				maxArea = a;
-				rect = r;
-			}
-		}
 		
-		int rectCenter = rect.x + rect.width/2;
-		boolean left = (IMG_WIDTH/2 - rectCenter) > 0;
+		System.out.println("left: " + left);
 		
-		if (left) {
+		if (!left) {
 			Robot.drive.tankDrive(SPEED, 0);
 		} else {
 			Robot.drive.tankDrive(0, SPEED);
 		}
 
-		Robot.drive.driveStraight(SPEED);
-
-		System.out.println(Arrays.toString(output.toArray()));
+//		Robot.drive.driveStraight(SPEED);
+		
+		
     
 	}
 

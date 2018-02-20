@@ -34,17 +34,17 @@ public class Arm extends Subsystem {
 	public void armUp() {
 		//main is <= 361
 		//backup is >= .36
-		if(pot.get() <= 361)
-			arm.set(1.0);
-		//System.out.println(pot.get());
+		//if(pot.get() >= .50)
+			arm.set(.8);
+		System.out.println(pot.get());
 	}
 
 	public void armDown() {
 		//main is >= 359
 		//backup is <= 342
-		if(pot.get() >= 359)
-			arm.set(-1.0);
-		//System.out.println(pot.get());
+		if(pot.get() <= 0.7)
+			arm.set(-.8);
+		System.out.println(pot.get());
 	}
 
 	public void armStop() {
