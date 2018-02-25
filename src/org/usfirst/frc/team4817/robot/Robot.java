@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4817.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4817.robot.commands.PlaceOnSwitch;
 import org.usfirst.frc.team4817.robot.commands.VisionCommand;
 import org.usfirst.frc.team4817.robot.commands.GripPipeline;
 import org.usfirst.frc.team4817.robot.subsystems.Arm;
@@ -61,16 +63,16 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 
 	//vision
-	private VisionThread visionThread;
-	private boolean left;
-	private final Object imgLock = new Object();
+	//private VisionThread visionThread;
+	//private boolean left;
+	//private final Object imgLock = new Object();
 
-	private static final int IMG_WIDTH = 640;
-	private static final int IMG_HEIGHT = 480;
-	private static final double SPEED = 0.5;
+	//private static final int IMG_WIDTH = 640;
+	//private static final int IMG_HEIGHT = 480;
+	//private static final double SPEED = 0.5;
   
 
-	//SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -84,7 +86,7 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", chooser);
 
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		/*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
 				if (!pipeline.filterContoursOutput().isEmpty()) {
@@ -112,7 +114,7 @@ public class Robot extends IterativeRobot {
 						}
 				}
 		});
-		visionThread.start();
+		visionThread.start();*/
 	}
 
 	/**
@@ -153,9 +155,21 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
-		// if (autonomousCommand != null)
-		// 	autonomousCommand.start();
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.length() > 0)
+		{
+			if(gameData.charAt(0) == 'L')
+			{
+				autonomousCommand = new PlaceOnSwitch('L', 'M');
+				autonomousCommand.start();
+
+			} else {
+				autonomousCommand = new PlaceOnSwitch('R', 'M');
+				autonomousCommand.start();
+			}
+		}
+
 	}
 
 	/**
@@ -163,21 +177,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		// Scheduler.getInstance().run();
-		boolean left;
+		 Scheduler.getInstance().run();
+		/*boolean left;
 		synchronized (imgLock) {
 			left = this.left;
 
 		}
-		
-		
+
+
 		System.out.println("left: " + left);
-		
+
 		if (left) {
 			drive.tankDrive(SPEED, 0);
 		} else {
 			drive.tankDrive(0, SPEED);
-		}
+		}*/
 	}
 
 	@Override
