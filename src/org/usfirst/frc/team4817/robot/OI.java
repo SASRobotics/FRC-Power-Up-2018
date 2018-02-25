@@ -1,3 +1,15 @@
+//      _                                                       _                       _             _
+//   __(_)_ _  __ _ __ _ _ __  ___ _ _ ___   __ _ _ __  ___ _ _(_)__ __ _ _ _    ___ __| |_  ___  ___| |
+//  (_-< | ' \/ _` / _` | '_ \/ _ \ '_/ -_) / _` | '  \/ -_) '_| / _/ _` | ' \  (_-</ _| ' \/ _ \/ _ \ |
+//  /__/_|_||_\__, \__,_| .__/\___/_| \___| \__,_|_|_|_\___|_| |_\__\__,_|_||_| /__/\__|_||_\___/\___/_|
+//            |___/     |_|
+//
+//		________________ _________       ________                                 _____ _________ ____________
+//		___  ____/___  __ \__  ____/       ___  __/_____ ______ ________ ___        __  // /__( __ )__<  //__  /
+//		__  /_    __  /_/ /_  /            __  /   _  _ \_  __ `/__  __ `__ \       _  // /__  __  |__  / __  /
+//		_  __/    _  _, _/ / /___          _  /    /  __// /_/ / _  / / / / /       /__  __// /_/ / _  /  _  /
+//		/_/       /_/ |_|  \____/          /_/     \___/ \__,_/  /_/ /_/ /_/          /_/   \____/  /_/   /_/
+
 package org.usfirst.frc.team4817.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -6,7 +18,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team4817.robot.commands.ArmCommand;
 import org.usfirst.frc.team4817.robot.commands.ClimberCommand;
-import org.usfirst.frc.team4817.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4817.robot.commands.IntakeCommand;
 
 /**
