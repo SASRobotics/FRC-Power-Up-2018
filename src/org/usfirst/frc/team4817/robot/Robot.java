@@ -28,6 +28,8 @@ import org.usfirst.frc.team4817.robot.subsystems.Arm;
 import org.usfirst.frc.team4817.robot.subsystems.Drive;
 import org.usfirst.frc.team4817.robot.subsystems.Intake;
 import org.usfirst.frc.team4817.robot.subsystems.Climber;
+import org.usfirst.frc.team4817.robot.subsystems.ClimberArm;
+import org.usfirst.frc.team4817.robot.subsystems.Slider;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -63,6 +65,10 @@ public class Robot extends IterativeRobot {
 	public static final Intake intake = new Intake();
 	//climber
 	public static final Climber climber = new Climber();
+	//slider
+	public static final Slider slider = new Slider();
+	//climber arm
+	public static final ClimberArm climberArm = new ClimberArm();
 
 
 	Command autonomousCommand;

@@ -26,11 +26,11 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
  */
 public class Arm extends Subsystem {
 	WPI_TalonSRX arm;
-	WPI_TalonSRX armSlave;
+	//WPI_TalonSRX armSlave;
 	
-	Potentiometer pot;
+	//Potentiometer pot;
 	
-	AnalogInput ai = new AnalogInput(0);
+	//AnalogInput ai = new AnalogInput(0);
     
     public Arm() {
         super("Arm");
@@ -40,23 +40,23 @@ public class Arm extends Subsystem {
 		//armSlave = new WPI_TalonSRX(RobotMap.armRightMotor);
 		//armSlave.follow(arm);
 		
-        pot = new AnalogPotentiometer(ai, 360, 0);
+        //pot = new AnalogPotentiometer(ai, 360, 0);
     }
 
 	public void armUp() {
 		//main is <= 361
 		//backup is >= .36
 		//if(pot.get() >= .50)
-			arm.set(.8);
-		System.out.println(pot.get());
+		arm.set(.9);
+		//System.out.println(pot.get());
 	}
 
 	public void armDown() {
 		//main is >= 359
 		//backup is <= 342
-		if(pot.get() <= 0.7)
-			arm.set(-.8);
-		System.out.println(pot.get());
+		//if(pot.get() <= 0.7)
+			arm.set(-.9);
+		//System.out.println(pot.get());
 	}
 
 	public void armStop() {

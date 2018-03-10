@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team4817.robot.commands.ArmCommand;
+import org.usfirst.frc.team4817.robot.commands.ClimberArmCommand;
 import org.usfirst.frc.team4817.robot.commands.ClimberCommand;
 import org.usfirst.frc.team4817.robot.commands.IntakeCommand;
+import org.usfirst.frc.team4817.robot.commands.SliderCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -30,14 +32,21 @@ public class OI {
 	Joystick stick2= new Joystick (1);
 	//arm buttons
 	Button armUp= new JoystickButton(stick1, 4); 
-	Button armDown= new JoystickButton(stick2, 3);
+	Button armDown= new JoystickButton(stick1, 3);
 	//intake buttons
-	Button leftIntake = new JoystickButton(stick1, 1);
-	Button rightIntake = new JoystickButton(stick2, 1);
-	Button out = new JoystickButton(stick2, 2);
+	Button intakeIn = new JoystickButton(stick1, 1);
+	Button intakeOut = new JoystickButton(stick2, 1);
+		//Button out = new JoystickButton(stick2, 2);
+	
 	//climber buttons
-	Button climberUp= new JoystickButton(stick1, 5); 
+	Button climberUp= new JoystickButton(stick2, 5); 
 	Button climberDown= new JoystickButton(stick2, 6);
+	Button climberArmUp = new JoystickButton(stick2, 3);
+	Button climberArmDown = new JoystickButton(stick2, 4);
+	
+	//slider buttons
+	Button sliderOut = new JoystickButton(stick1, 6);
+	Button sliderIn = new JoystickButton(stick1, 5);
 	
 	//read joystick
 	public double getLeftStick(){
@@ -60,20 +69,39 @@ public class OI {
 		//stop arm
 		armUp.whenReleased(new ArmCommand(0));
 		armDown.whenReleased(new ArmCommand(0));
-		//left intake
-		leftIntake.whenPressed(new IntakeCommand('l', 'i'));
+
+		intakeIn.whenPressed(new IntakeCommand('i'));
+		intakeIn.whenReleased(new IntakeCommand('s'));
+
+		intakeOut.whenPressed(new IntakeCommand('o'));
+		intakeOut.whenReleased(new IntakeCommand('s'));
+		/*//left intake
+		leftIntake.whenPressed(new IntakeCommand('i'));
 		leftIntake.whenReleased(new IntakeCommand('l', 's'));
 		//right intake
 		rightIntake.whenPressed(new IntakeCommand('r', 'i'));
 		rightIntake.whenReleased(new IntakeCommand('r', 's'));
 		//intake out
 		out.whenPressed(new IntakeCommand('b', 'o'));
-		out.whenReleased(new IntakeCommand('b', 's'));
+		out.whenReleased(new IntakeCommand('b', 's'));*/
+
+		sliderOut.whenPressed(new SliderCommand(1));
+		sliderOut.whenReleased(new SliderCommand(0));
+		
+		sliderIn.whenPressed(new SliderCommand(2));
+		sliderIn.whenReleased(new SliderCommand(0));
 		//control climber
 		climberUp.whenPressed(new ClimberCommand(1));
 		climberDown.whenPressed(new ClimberCommand(2));
 		//stop climber
 		climberUp.whenReleased(new ClimberCommand(0));
 		climberDown.whenReleased(new ClimberCommand(0));
+		
+		//climber arm
+		climberArmUp.whenPressed(new ClimberArmCommand(1));
+		climberArmDown.whenPressed(new ClimberArmCommand(2));
+		//stop climber arm
+		climberArmUp.whenReleased(new ClimberArmCommand(0));
+		climberArmDown.whenReleased(new ClimberArmCommand(0));
 	}
 }

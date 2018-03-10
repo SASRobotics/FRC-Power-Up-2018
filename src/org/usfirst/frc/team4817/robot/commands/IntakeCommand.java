@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeCommand extends Command {
 
-	public char side;
+	//public char side;
 	public char direction;
 	
-    public IntakeCommand(char s, char d) {
+    public IntakeCommand(char d) {
     	requires(Robot.intake);
-    	side = s;
+    	//side = s;
     	direction = d; 
     }
     
@@ -36,7 +36,19 @@ public class IntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (side == 'l') {
+    	if(direction == 'i') {
+    		Robot.intake.leftIn();
+    		Robot.intake.rightIn();
+		}
+		else if (direction == 'o') {
+    		Robot.intake.leftOut();
+    		Robot.intake.rightOut();
+		}
+		else {
+    		Robot.intake.leftStop();
+    		Robot.intake.rightStop();
+		}
+    	/*if (side == 'l') {
     		if (direction == 'i'){
         		Robot.intake.leftIn(); 
         	}
@@ -61,7 +73,7 @@ public class IntakeCommand extends Command {
     	} else {
     		Robot.intake.leftStop();
     		Robot.intake.rightStop();
-    	}
+    	}*/
     }
 
     // Make this return true when this Command no longer needs to run execute()

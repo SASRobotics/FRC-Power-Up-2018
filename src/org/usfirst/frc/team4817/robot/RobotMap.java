@@ -31,4 +31,8 @@ public class RobotMap {
 	public static final int intakeRightMotor = 10;
 	//climber
 	public static final int climberMotor = 1;
+	public static final int climberArmMotor = 5;
+	
+	//slider
+	public static final int sliderMotor = 8;
 }
